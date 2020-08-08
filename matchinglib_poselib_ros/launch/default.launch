@@ -1,0 +1,14 @@
+<!-- ROS launch file -->
+<launch>
+    <arg name="node_name"       default="matchinglib_poselib_ros" />
+    <arg name="config_file"     default="$(find matchinglib_poselib_ros)/launch/default_config.yaml" />
+    <!-- <arg name="launch_prefix"   default="xterm -hold -geometry 105x19 -e gdbserver localhost:10000" /> -->
+    <arg name="launch_prefix"   default="xterm -hold -geometry 105x19 -e" />
+
+    <!-- <remap from="/cam0/image" to="/videofile/image_raw"/>
+    <remap from="/cam0/camera_info" to="/videofile/camera_info"/> -->
+
+    <node pkg="$(arg node_name)" type="$(arg node_name)_node" name="$(arg node_name)" launch-prefix="$(arg launch_prefix)">
+        <rosparam file="$(arg config_file)" command="load" />
+    </node>
+</launch>

@@ -1,0 +1,307 @@
+########################################
+### node config
+node_profile: false
+# [Hz]
+node_spinning_rate: 30
+# [sec]
+node_warn_time: 30
+
+########################################
+### ROSnode config
+
+# input stream (mono = default)
+type: "mono" #"stereo"
+
+# provide poses? (false = default)
+bInputPose: true #false
+
+# skip pose estimation? (bInputPose must be true)
+bSkipPose: false
+
+# Set Variant for image pair selection
+# mono mode: the selectionType sets which images should be used as pair
+# stereo mode: complete image pairs will be skipped depending on the selectionType
+# All (default): use all given images
+# Skip: skip given number of images (defined by skipCount)
+# Time: time difference between incoming images in ms (defined by timeDiff)
+# Baseline: required baseline between camera poses (defined by baseline)
+selectionType: "All"
+
+# set number of images to skip, used when selectionType = Skip (1 = default)
+skipCount: 1
+
+# set time difference in ms, used when selectionType = Time (1000 = default)
+timeDiff: 1000
+
+# set baseline in m between camera poses, used when selectionType = Baseline (1 = default)
+baseline: 1
+
+# set buffersize (default = 100) for image selection, must be large enough to include images that
+# are required for selection (if selection criterion is not met, because if the buffer
+# is too small - the first and last images will be used)
+bufferSize: 100
+
+# Verbosity Level:
+# 0: Display only pose
+# 1: Display matching time
+# 2: Display feature detection times and matching time
+# 3: Display number of features and matches in addition to all temporal values
+# 4: Display pose & pose estimation time
+# 5: Display pose and pose estimation & refinement times
+# 6 (default): Display all available information
+VerbosityLevel: 6
+
+# Scaling paramter for controling the image size of rectified images. If it is
+# -1 or absent, the function performs the default scaling. Otherwise, the
+# parameter should be between 0 and 1. alpha=0 means that the rectified images
+# are zoomed and shifted so that only valid pixels are visible (no black areas
+# after rectification). alpha=1 means that the rectified image is decimated and
+# shifted so that all the pixels from the original images from the cameras are
+# retained in the rectified images (no source image pixels are lost). Obviously,
+# any intermediate value yields an intermediate result between those two extreme cases.
+aphaRect: 1
+
+bPublishMatches: true
+
+# Specifies the number of matches that should be drawn.
+# -1: draw all matches
+# -2: draw all matches in addition to all not matchable keypoints
+numDrawnMatches: 50
+
+#  Apply histogram equalization to the source images.
+bHistEqualization: true #false
+
+# available feature detectors:
+# FAST (default), MSER, ORB, BRISK, KAZE, AKAZE, STAR, MSD (SIFT, SURF)
+featureDetector: "BRISK" #"ORB" #"FAST"
+
+# available descriptor extractors:
+# FREAK (default), BRISK, ORB, KAZE, AKAZE, DAISY, LATCH, BGM, BGM_HARD, BGM_BILINEAR, LBGM, BINBOOST_64, BINBOOST_128, BINBOOST_256, VGG_120, VGG_80, VGG_64, VGG_48, RIFF, BOLD, (SIFT, SURF)
+descriptorExtractor: "FREAK" #"ORB" #"FREAK"
+
+# available matchers
+# GMBSOF (default): Guided Matching based on Statistical Optical Flow
+# CASHASH: Cascade Hashing matcher
+# HIRCLUIDX: Hierarchical Clustering Index Matching from the FLANN library
+# HIRKMEANS: hierarchical k-means tree matcher from the FLANN library
+# LINEAR: Linear matching algorithm (Brute force) from the FLANN library
+# LSHIDX: LSH Index Matching algorithm from the FLANN library (not stable (bug in FLANN lib) -> program may crash)
+# RANDKDTREE: randomized KD-trees matcher from the FLANN library
+# SWGRAPH: Small World Graph(SW - graph) from the NMSLIB. Parameters for the matcher should be specified with options 'nmsIdx' and 'nmsQry'.
+# HNSW: Hiarchical Navigable Small World Graph. Parameters for the matcher should be specified with options 'nmsIdx' and 'nmsQry'.
+# VPTREE: VP - tree or ball - tree from the NMSLIB. Parameters for the matcher should be specified with options 'nmsIdx' and 'nmsQry'.
+# MVPTREE: Multi - Vantage Point Tree from the NMSLIB. Parameters for the matcher should be specified with options 'nmsIdx' and 'nmsQry'.
+# GHTREE: GH - Tree from the NMSLIB.Parameters for the matcher should be specified with options 'nmsIdx' and 'nmsQry'.
+# LISTCLU: List of clusters from the NMSLIB.Parameters for the matcher should be specified with options 'nmsIdx' and 'nmsQry'.
+# SATREE: Spatial Approximation Tree from the NMSLIB.
+# BRUTEFORCENMS: Brute - force(sequential) searching from the NMSLIB.
+# ANNOY: Approximate Nearest Neighbors Matcher.
+matchAlg: "GMBSOF" #"HNSW"
+#"GMBSOF"
+
+# NMSLib Parameters
+nmsQry: ""
+nmsIdx: ""
+
+# disable ratio test (can not be disabled when using GMBSOF)
+bNoRatioTest: false
+
+# refine result of matching algorithm with VFC
+bRefineVFC: false
+
+# refine result of matching algorithm with SOF
+bRefineSOF: false
+
+# refine result of matching algorithm with GMS
+bRefineGMS: false
+
+# detect the keypoints dynamically to limit the number of keypoints approximately to the maximum number.
+bDynKeyP: true #false
+
+# The maximum number of keypoints per frame [Default=8000] that should be used for matching.
+maxKpPerFrame: 8000 #30000 #2000
+
+# refine the feature positions of the final matches by template matching to get sub-pixel accuracy. Be careful, if there are large rotations, changes in scale or other feature deformations between the matches, this option should not be set.
+# 0: Disable subpixel refinement
+# 1: Use template matching for subpixel refinement. This is the most accurate methode but it can fail for large rotation and scale chages between images.
+# 2: Use corner refinement on the feature locations using the OpenCV method cornerSubPix
+refineSubPx: 1
+
+# adapt the threshold for estimating the pose to the data automatically.
+# This method always uses ARRSAC with subsequent refinement (bRefineRT)
+# this option is mutually exclusive with estimateHomography
+bAutoAdaptTH: false
+
+# If set, the pose is estimated using homography alignment.
+# Thus, multiple homographies are estimated using ARRSAC. The following options are available:
+# 0: No estimating using homography alignment
+# 1: Estimate homographies without a variable threshold
+# 2: Estimate homographies with a variable threshold
+estimateHomography: 0
+
+# refine the pose using differnt kinds of linear methods for refinement after estimation with a robust method (e.g. RANSAC) and before possible bundle adjustment.
+# 0: Disable subsequent refinement after the estimation of the essential matrix
+# 1: Use the old version of refinment: 8pt algorithm with pseudo-huber cost function
+# 2: 8pt algorithm
+# 3: Nister
+# 4: Stewenius
+# 5: Kneips Eigen solver is applied on the result of a robust method (e.g. RANSAC) directly
+# 6: Kneips Eigen solver is used instead of bundle adjustment after extracting R & t without additional refinement after the robust estimation (e.g. RANSAC)
+refineRT: 6 #0
+
+# weighting function used during refinement (refineRT)
+# 0: Dont use weights
+# 1: Torr weights (ref: torr dissertation, eqn. 2.25)
+# 2: Pseudo-Huber weights
+refineRTweights: 2
+
+# Threshold for the robust estimation methods on the Samson errors of the correspondences in the range of 0.5 to 3 pixels
+# If no sub-pixel refinement with template matching is used the minimum threshold should be 1.2
+th: 1.2 #0.8
+
+# refine the pose (R, t) using bundle adjustment (BA). Try using the option bRefineRT in addition. This can lead to a better solution (if bAutoAdaptTH is enabled, bRefineRT is always used).
+# available options:
+# 0: no bundle adjustment
+# 1: BA for extrinsics only (including structure)
+# 2: BA for extrinsics and intrinsics (including structure)
+refineBA: 1 #0
+
+# Specifies the method for the robust estimation of the essential matrix. Available options:
+# USAC (default), ARRSAC, RANSAC, LMEDS
+robustMethod: "USAC"
+
+# 0: Use default paramters for SPRT
+# 1: Automatic estimation of SPRT delta
+# 2: Automatic estimation of SPRT epsilon
+# 3: (default) Automatic estimation of SPRT delta and epsilon
+usacSPRT: 3
+
+# If Automatic estimation of SPRT epsilon is enabled, the initial value is calculated by approximating the inlier ratio. This is performed using the GMS or VFC filter on the matches.
+# 0: GMS filter for estimating the inlier ratio
+# 1: VFC filter for estimating the inlier ratio
+usacInlratFilt: 0
+
+# 0: Use default paramter for PROSAC beta
+# 1: (default) Automatic estimation of PROSAC beta (uses SPRT delta)
+usacPROSACbeta: 1
+
+# 0: Disable prevalidation of samples
+# 1: (default) Enable prevalidation of samples
+usacPrevalidateSamples: 1
+
+# 0: Disable degeneracy check
+# 1: Use QDEGSAC for checking degeneracy
+# 2: (default) Use USACs internal degeneracy check
+usacDegeneracyCheck: 2
+
+#Decision threshold on the inlier ratios between Essential matrix and the degenerate configuration (only rotation) to decide if the solution is degenerate or not [Default=0.85]. It is only used for the internal degeneracy check of USAC.
+usacDegeneracyThreshold: 1.25 #0.85
+
+# 0: Nister
+# 1: Kneip's Eigen solver
+# 2: (default) Stewenius
+usacEstimator: 2
+
+# 0: 8pt with Torr weights
+# 1: 8pt with pseudo-huber weights
+# 2: Kneip's Eigen solver
+# 3: Kneip's Eigen solver with Torr weights
+# 4: Stewenius
+# 5: (default) Stewenius with pseudo-huber weights
+# 6: Nister
+# 7: Nister with pseudo-huber weights
+usacInnerRefinementAlgorithm: 5
+
+# Maximum value for the z-coordinates of 3D points to be included into BA. Moreover, this value influences the decision if a pose is marked as stable during stereo refinement (see maxRat3DPtsFar).
+# Max value = 200.0, min value = 5.0
+maxDist3DPtsZ: 60.0 #80.0 #50.0
+
+# Use stereo refinement
+bStereoRef: false
+
+#For stereo refinement: Use the last stable pose for n pairs without new estimation.
+evStepStereoStable: 5 #0
+
+#For stereo refinement: Use only stable poses for rectification. During instability the last stable pose is used.
+useOnlyStablePose: true #false
+
+#For stereo refinement: Use the most likely pose of the last valid poses and not the actual pose.
+useMostLikelyPose: true #false
+
+#For stereo refinement: refine the pose using differnt kinds of linear methods for refinement on all correspondences of the last valid image pairs.
+# 1: Use the old version of refinment: 8pt algorithm with pseudo-huber cost function
+# 2: 8pt algorithm
+# 3: Nister
+# 4: Stewenius
+# 5: Kneips Eigen solver is applied on the result of a robust method (e.g. RANSAC) directly
+# 6: Kneips Eigen solver is used instead of bundle adjustment after extracting R & t without additional refinement after the robust estimation (e.g. RANSAC)
+refineRT_stereo: 4
+
+#For stereo refinement: weighting function used during refinement (refineRT_stereo)
+# 0: Dont use weights
+# 1: Torr weights (ref: torr dissertation, eqn. 2.25)
+# 2: Pseudo-Huber weights
+refineRTweights_stereo: 2
+
+#For stereo refinement: refine the pose (R, t) using bundle adjustment (BA) after linear refinement (refineRT_stereo).
+# available options:
+# 0: no bundle adjustment
+# 1: BA for extrinsics only (including structure)
+# 2: BA for extrinsics and intrinsics (including structure)
+refineBA_stereo: 1 #0
+
+#For stereo refinement: Minimum inlier ratio at robust estimation to start correspondence aggregation.
+minStartAggInlRat: 0.52 #0.2
+
+#For stereo refinement: Maximum relative change of the inlier ratio between image pairs to check by a robsut method if the pose changed.
+relInlRatThLast: 0.35
+
+#For stereo refinement: Maximum relative change between the inlier ratio with the last E and the new robustly estimated E on the new image pair to check if the pose has really changed or if only the image pair qulity is very bad (Only if relInlRatThLast does not hold).
+relInlRatThNew: 0.2
+
+#For stereo refinement: Maximum inlier ratio using the new robustly estimated E to decide if the image pair quality is too bad (Only if relInlRatThNew does not hold and minInlierRatioReInit is not reached). Below this threshold, a fall-back threshold estimated by relMinInlierRatSkip and the inlier ratio of the last image pair can be used, if the resulting threshold is smaller minInlierRatSkip.
+minInlierRatSkip: 0.38
+
+#For stereo refinement: Multiplication factor on the inlier ratio from the last image pair compared to the new robust estimated one to decide if the new image pair quality is too bad. minInlierRatSkip also influences the decision.
+relMinInlierRatSkip: 0.7
+
+#For stereo refinement: Number of consecutive image pairs where a change in pose or a bad pair was detected until the system is reinitialized.
+maxSkipPairs: 5
+
+#For stereo refinement: Minimum inlier ratio of the new robust estimation after a change in pose was detected to immediately reinitialize the system (Only if relInlRatThNew does not hold).
+minInlierRatioReInit: 0.67 #0.6
+
+#For stereo refinement: Minimum distance between correspondences in the pool (holding the correspondences of the last image pairs).
+minPtsDistance: 2.5 #3.0
+
+#For stereo refinement: Maximum number of correspondences in the pool.
+maxPoolCorrespondences: 30000
+
+#For stereo refinement: Minimum number of poses that must be very similar in terms of their geometric distance to detect stability.
+minContStablePoses: 4 #3
+
+#For stereo refinement: Maximum normalized error range difference between image pairs to detect stability. This is only a fallback solution if stability is not found from the poses directly and the maximum pool size is reached.
+absThRankingStable: 0.075
+
+#For stereo refinement: Use RANSAC for robust estimation if less than 100 matches are available.
+useRANSAC_fewMatches: false
+
+#For stereo refinement: After this number of iterations or new image pairs, robust estimation is performed on the pool correspondences. The number automatically grows exponentially after each robust estimation.
+# 0: Disabled
+# 1: Robust estimation is used instead of refinement.
+# 2-20: see above
+checkPoolPoseRobust: 2 #3
+
+#For stereo refinement: Minimum normalized distance to the center of gravity of all valid poses to detect stability.
+minNormDistStable: 0.7 #0.5
+
+# If not 0, the value of maxSkipPairs is increased after a specific number of stable consecutive poses (defined by raiseSkipCntStable) were detected. It is increased to std::ceil(maxSkipPairs * (1.0 + (raiseSkipCntIncr) * 0.25)). The maximum of mRaiseSkipCntIncr=15.
+# 0: disabled
+# 1-15: Increasing factor
+raiseSkipCntIncr: 6 #0
+
+# Number of stable consecutive poses ((raiseSkipCntStable) + 1) after which maxSkipPairs is increased using raiseSkipCntIncr.
+raiseSkipCntStable: 2 #0
+
+# Maximum ratio of 3D points for which their z-value is very large (maxDist3DPtsZ x baseline) compared to the number of all 3D points. Above this threshold, a pose cannot be marked as stable using only a threshold on the Sampson error ranges (see absThRankingStable)
+maxRat3DPtsFar: 0.2 #0.5
