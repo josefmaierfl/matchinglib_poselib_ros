@@ -16,18 +16,8 @@ find_package(matchinglib_poselib REQUIRED)
 find_package(Eigen REQUIRED)
 
 find_package(Clapack REQUIRED)
-#if (CLAPACK_FOUND STREQUAL "YES")
-#  message(STATUS "Clapack found!")
-#else()
-#  message(FATAL_ERROR "Clapack not found!")
-#endif()
 
 find_package(SBA REQUIRED)
-#if (SBA_FOUND STREQUAL "YES")
-#  message(STATUS "SBA found!")
-#else()
-#  message(FATAL_ERROR "SBA not found!")
-#endif()
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -183,7 +173,7 @@ include_directories(
    ${system_lib_INCLUDE_DIRS}
    matchinglib_poselib::matchinglib
    matchinglib_poselib::poselib
-        ${CLAPACK_INCLUDE_DIRS}
+   ${CLAPACK_INCLUDE_DIRS}
 )
 
 ####
@@ -198,8 +188,8 @@ target_link_libraries(${lib_name}
   PUBLIC
 
   ${catkin_LIBRARIES}
-        sba
-        ${CLAPACK_LIBRARIES}
+  sba
+  ${CLAPACK_LIBRARIES}
   matchinglib_poselib::matchinglib
   matchinglib_poselib::poselib
   ${OpenCV_LIBS}

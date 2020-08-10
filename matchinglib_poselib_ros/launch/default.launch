@@ -4,6 +4,7 @@
     <arg name="config_file"     default="$(find matchinglib_poselib_ros)/launch/default_config.yaml" />
     <!-- <arg name="launch_prefix"   default="xterm -hold -geometry 105x19 -e gdbserver localhost:10000" /> -->
     <arg name="launch_prefix"   default="xterm -hold -geometry 105x19 -e" />
+    <!-- <arg name="launch_prefix"   default="xterm -e" /> -->
 
     <!-- <remap from="/cam0/image" to="/videofile/image_raw"/>
     <remap from="/cam0/camera_info" to="/videofile/camera_info"/> -->
