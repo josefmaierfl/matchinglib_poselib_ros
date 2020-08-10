@@ -9,11 +9,11 @@ node_warn_time: 30
 ########################################
 ### ROSnode config
 
-# input stream (mono = default)
-type: "mono" #"stereo"
+# input stream (stereo = default)
+type: "stereo" #"mono"
 
 # provide poses? (false = default)
-bInputPose: true #false
+bInputPose: false
 
 # skip pose estimation? (bInputPose must be true)
 bSkipPose: false
@@ -96,8 +96,7 @@ descriptorExtractor: "FREAK" #"ORB" #"FREAK"
 # SATREE: Spatial Approximation Tree from the NMSLIB.
 # BRUTEFORCENMS: Brute - force(sequential) searching from the NMSLIB.
 # ANNOY: Approximate Nearest Neighbors Matcher.
-matchAlg: "GMBSOF" #"HNSW"
-#"GMBSOF"
+matchAlg: "HNSW" #"GMBSOF"
 
 # NMSLib Parameters
 nmsQry: ""
@@ -118,8 +117,8 @@ bRefineGMS: false
 # detect the keypoints dynamically to limit the number of keypoints approximately to the maximum number.
 bDynKeyP: true #false
 
-# The maximum number of keypoints per frame [Default=8000] that should be used for matching.
-maxKpPerFrame: 8000 #30000 #2000
+# The maximum number of keypoints per frame [Default=5000] that should be used for matching.
+maxKpPerFrame: 5000
 
 # refine the feature positions of the final matches by template matching to get sub-pixel accuracy. Be careful, if there are large rotations, changes in scale or other feature deformations between the matches, this option should not be set.
 # 0: Disable subpixel refinement
@@ -147,7 +146,7 @@ estimateHomography: 0
 # 4: Stewenius
 # 5: Kneips Eigen solver is applied on the result of a robust method (e.g. RANSAC) directly
 # 6: Kneips Eigen solver is used instead of bundle adjustment after extracting R & t without additional refinement after the robust estimation (e.g. RANSAC)
-refineRT: 6 #0
+refineRT: 2
 
 # weighting function used during refinement (refineRT)
 # 0: Dont use weights
@@ -155,16 +154,16 @@ refineRT: 6 #0
 # 2: Pseudo-Huber weights
 refineRTweights: 2
 
-# Threshold for the robust estimation methods on the Samson errors of the correspondences in the range of 0.5 to 3 pixels
+# Threshold for the robust estimation methods on the Sampson errors of the correspondences in the range of 0.5 to 3 pixels
 # If no sub-pixel refinement with template matching is used the minimum threshold should be 1.2
-th: 1.2 #0.8
+th: 1.6
 
 # refine the pose (R, t) using bundle adjustment (BA). Try using the option bRefineRT in addition. This can lead to a better solution (if bAutoAdaptTH is enabled, bRefineRT is always used).
 # available options:
 # 0: no bundle adjustment
 # 1: BA for extrinsics only (including structure)
 # 2: BA for extrinsics and intrinsics (including structure)
-refineBA: 1 #0
+refineBA: 0
 
 # Specifies the method for the robust estimation of the essential matrix. Available options:
 # USAC (default), ARRSAC, RANSAC, LMEDS
@@ -195,7 +194,7 @@ usacPrevalidateSamples: 1
 usacDegeneracyCheck: 2
 
 #Decision threshold on the inlier ratios between Essential matrix and the degenerate configuration (only rotation) to decide if the solution is degenerate or not [Default=0.85]. It is only used for the internal degeneracy check of USAC.
-usacDegeneracyThreshold: 1.25 #0.85
+usacDegeneracyThreshold: 1.65
 
 # 0: Nister
 # 1: Kneip's Eigen solver
@@ -210,17 +209,17 @@ usacEstimator: 2
 # 5: (default) Stewenius with pseudo-huber weights
 # 6: Nister
 # 7: Nister with pseudo-huber weights
-usacInnerRefinementAlgorithm: 5
+usacInnerRefinementAlgorithm: 0
 
 # Maximum value for the z-coordinates of 3D points to be included into BA. Moreover, this value influences the decision if a pose is marked as stable during stereo refinement (see maxRat3DPtsFar).
 # Max value = 200.0, min value = 5.0
-maxDist3DPtsZ: 60.0 #80.0 #50.0
+maxDist3DPtsZ: 130.0
 
 # Use stereo refinement
 bStereoRef: false
 
 #For stereo refinement: Use the last stable pose for n pairs without new estimation.
-evStepStereoStable: 5 #0
+evStepStereoStable: 1
 
 #For stereo refinement: Use only stable poses for rectification. During instability the last stable pose is used.
 useOnlyStablePose: true #false
@@ -235,7 +234,7 @@ useMostLikelyPose: true #false
 # 4: Stewenius
 # 5: Kneips Eigen solver is applied on the result of a robust method (e.g. RANSAC) directly
 # 6: Kneips Eigen solver is used instead of bundle adjustment after extracting R & t without additional refinement after the robust estimation (e.g. RANSAC)
-refineRT_stereo: 4
+refineRT_stereo: 5
 
 #For stereo refinement: weighting function used during refinement (refineRT_stereo)
 # 0: Dont use weights
@@ -251,37 +250,37 @@ refineRTweights_stereo: 2
 refineBA_stereo: 1 #0
 
 #For stereo refinement: Minimum inlier ratio at robust estimation to start correspondence aggregation.
-minStartAggInlRat: 0.52 #0.2
+minStartAggInlRat: 0.2
 
 #For stereo refinement: Maximum relative change of the inlier ratio between image pairs to check by a robsut method if the pose changed.
-relInlRatThLast: 0.35
+relInlRatThLast: 0.308
 
 #For stereo refinement: Maximum relative change between the inlier ratio with the last E and the new robustly estimated E on the new image pair to check if the pose has really changed or if only the image pair qulity is very bad (Only if relInlRatThLast does not hold).
-relInlRatThNew: 0.2
+relInlRatThNew: 0.306
 
 #For stereo refinement: Maximum inlier ratio using the new robustly estimated E to decide if the image pair quality is too bad (Only if relInlRatThNew does not hold and minInlierRatioReInit is not reached). Below this threshold, a fall-back threshold estimated by relMinInlierRatSkip and the inlier ratio of the last image pair can be used, if the resulting threshold is smaller minInlierRatSkip.
 minInlierRatSkip: 0.38
 
 #For stereo refinement: Multiplication factor on the inlier ratio from the last image pair compared to the new robust estimated one to decide if the new image pair quality is too bad. minInlierRatSkip also influences the decision.
-relMinInlierRatSkip: 0.7
+relMinInlierRatSkip: 0.264
 
 #For stereo refinement: Number of consecutive image pairs where a change in pose or a bad pair was detected until the system is reinitialized.
 maxSkipPairs: 5
 
 #For stereo refinement: Minimum inlier ratio of the new robust estimation after a change in pose was detected to immediately reinitialize the system (Only if relInlRatThNew does not hold).
-minInlierRatioReInit: 0.67 #0.6
+minInlierRatioReInit: 0.541
 
 #For stereo refinement: Minimum distance between correspondences in the pool (holding the correspondences of the last image pairs).
-minPtsDistance: 2.5 #3.0
+minPtsDistance: 3.523
 
 #For stereo refinement: Maximum number of correspondences in the pool.
-maxPoolCorrespondences: 30000
+maxPoolCorrespondences: 4486
 
 #For stereo refinement: Minimum number of poses that must be very similar in terms of their geometric distance to detect stability.
-minContStablePoses: 4 #3
+minContStablePoses: 4
 
 #For stereo refinement: Maximum normalized error range difference between image pairs to detect stability. This is only a fallback solution if stability is not found from the poses directly and the maximum pool size is reached.
-absThRankingStable: 0.075
+absThRankingStable: 0.293205
 
 #For stereo refinement: Use RANSAC for robust estimation if less than 100 matches are available.
 useRANSAC_fewMatches: false
@@ -290,10 +289,10 @@ useRANSAC_fewMatches: false
 # 0: Disabled
 # 1: Robust estimation is used instead of refinement.
 # 2-20: see above
-checkPoolPoseRobust: 2 #3
+checkPoolPoseRobust: 2
 
 #For stereo refinement: Minimum normalized distance to the center of gravity of all valid poses to detect stability.
-minNormDistStable: 0.7 #0.5
+minNormDistStable: 0.48087
 
 # If not 0, the value of maxSkipPairs is increased after a specific number of stable consecutive poses (defined by raiseSkipCntStable) were detected. It is increased to std::ceil(maxSkipPairs * (1.0 + (raiseSkipCntIncr) * 0.25)). The maximum of mRaiseSkipCntIncr=15.
 # 0: disabled
@@ -304,4 +303,4 @@ raiseSkipCntIncr: 6 #0
 raiseSkipCntStable: 2 #0
 
 # Maximum ratio of 3D points for which their z-value is very large (maxDist3DPtsZ x baseline) compared to the number of all 3D points. Above this threshold, a pose cannot be marked as stable using only a threshold on the Sampson error ranges (see absThRankingStable)
-maxRat3DPtsFar: 0.2 #0.5
+maxRat3DPtsFar: 0.4
