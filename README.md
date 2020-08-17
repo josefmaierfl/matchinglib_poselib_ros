@@ -103,7 +103,7 @@ Optional (if enabled) - feature matches in [OpenCV style](https://docs.opencv.or
 
 Parameters can be set by editing file [./matchinglib_poselib_ros/launch/default_config.yaml](./matchinglib_poselib_ros/launch/default_config.yaml) before launching `matchinglib_poselib_ros` and/or by dynamic reconfiguration during runtime.
 
-Details/descriptions on each parameter can be found in the lauch file [./matchinglib_poselib_ros/launch/default_config.yaml](./matchinglib_poselib_ros/launch/default_config.yaml) or by hoovering
+Details/descriptions on each parameter can be found in the launch file [./matchinglib_poselib_ros/launch/default_config.yaml](./matchinglib_poselib_ros/launch/default_config.yaml) or by hovering over parameter names in `rqt_reconfigure` window.
 
 ## Usage <a name="usage"></a>
 
